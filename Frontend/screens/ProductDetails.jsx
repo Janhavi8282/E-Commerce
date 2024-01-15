@@ -48,7 +48,7 @@ const ProductDetails = ({navigation}) => {
     </View>
 
     <Image
-        source={{uri:item.imageUrl,}}
+        source={{uri: item.imageUrl}}
         style={styles.image}
         />
 

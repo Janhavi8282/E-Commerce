@@ -9,8 +9,36 @@ import { Welcome } from '../components';
 import Carousel from '../components/home/Carousel';
 import Heading from '../components/home/Heading';
 import ProductRow from '../components/products/ProductRow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+
 
 const Home = () => {
+  const [userData, setUserData] = useState(null);
+  const [userLogin, setUserLogin] = useState(false);
+  
+  useEffect(() =>{
+    checkExistingUser();
+}, []);
+
+const checkExistingUser = async () =>{
+const id = await AsyncStorage.getItem('id');
+const userId = `user${JSON.parse(id)}`;
+
+try{
+  const currentUser = await AsyncStorage.getItem(userId);
+  if(currentUser !=null){
+    const parsedData = JSON.parse(currentUser);
+    setUserData(parsedData);
+    setUserLogin(true);
+  }
+
+}
+catch(error){
+  console.log('Error', error);
+
+}
+}
   return (
     <SafeAreaView>
       <View style = {styles.appBarWrapper}>
@@ -20,7 +48,7 @@ const Home = () => {
                 size = {24}
               />
 
-              <Text style ={styles.location}>Kitchener, Ontario</Text>
+              <Text style ={styles.location}>{userData ? userData.location : 'Canada'}</Text>
 
               <View style={{alignItems: "flex-end"}}>
                 <View style={styles.cartCount}>

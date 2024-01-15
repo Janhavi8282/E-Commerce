@@ -5,6 +5,10 @@ import Profile from "./Profile";
 import ProductDetails from "./ProductDetails";
 import NewArrivals from "./NewArrivals";
 import ProductList from "../components/products/ProductList";
+import LoginScreen from "./LoginScreen";
+import Orders from "./Orders";
+import Favourites from "./Favourites";
+import SignUp from "./SignUp";
 
 export {
   Home,
@@ -14,4 +18,8 @@ export {
   ProductDetails,
   NewArrivals,
   ProductList,
+  LoginScreen,
+  Orders,
+  Favourites,
+  SignUp,
 };
