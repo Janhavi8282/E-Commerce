@@ -52,8 +52,8 @@ const LoginScreen = ({navigation}) => {
         setResponseData(response.data);
         //console.log(`user${responseData._id}`)
        await AsyncStorage.setItem(`user${responseData._id}`, JSON.stringify(responseData));
-       //await AsyncStorage.getItem('')
        await AsyncStorage.setItem('id', JSON.stringify(responseData._id));
+       await AsyncStorage.setItem('token', JSON.stringify(responseData.token));
        navigation.replace('Bottom Navigation');
 
 

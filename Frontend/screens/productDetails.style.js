@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: "cover",
     marginTop: SIZES.xxLarge,
-    height: "30%",
+    height: "40%",
     width: "100%",
   },
   details: {

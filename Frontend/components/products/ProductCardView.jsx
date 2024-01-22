@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const ProductCardView = ({item}) => {
     const navigation = useNavigation();
-    console.log("Image", item.imageUrl);
   return (
    <TouchableOpacity onPress={()=> navigation.navigate("ProductDetails", {item})}>
     <View style= {styles.container}>

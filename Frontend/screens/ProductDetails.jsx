@@ -1,5 +1,5 @@
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { useRoute } from '@react-navigation/native';
 import styles from './productDetails.style';
 import { COLORS } from '../constants';
@@ -7,12 +7,17 @@ import IonIcons from "@expo/vector-icons/Ionicons";
 import FontAwesomeIcon from '@expo/vector-icons/FontAwesome';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import AddToCart from '../hook/addToCart';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import addToCart from '../hook/addToCart';
 
 const ProductDetails = ({navigation}) => {
   const route = useRoute();
   const {item} = route.params;
   
   const [count,setCount] = useState(1);
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
+  const [favorites,setFavorites] = useState(false);
 
   //increment the count
   const increment = () =>{
@@ -24,7 +29,113 @@ const ProductDetails = ({navigation}) => {
     if(count > 1){
     setCount(count - 1);
     }
+  };
+
+  useEffect(()=>{
+    checkUser();
+    checkFavorites();
+  },[])
+
+  const checkUser = async() =>{
+    try{
+      const id = AsyncStorage.getItem("id")
+      if(id!== null)
+      {
+        setIsLoggedIn(true);
+        console.log(isLoggedIn);
+
+      }
+      else{
+        console.log("User not logged in");
+      }
+    }
+    catch(error){
+
+    }
   }
+
+  
+
+  const addToFavorites = async() =>{
+    const id = await AsyncStorage.getItem('id');
+    const favoritesId = `favorites${JSON.parse(id)}`;
+
+    let productId = item._id;
+    let productObj = {
+      title: item.title,
+      id: item._id,
+      supplier: item.supplier,
+      price: item.price,
+      imageUrl: item.imageUrl,
+      product_location: item.product_location
+    }
+
+    try{
+      const existingItem = await AsyncStorage.getItem(favoritesId);
+      let favoritesObj = existingItem ? JSON.parse(existingItem) : {};
+
+      if(favoritesObj[productId]){
+        delete favoritesObj[productId];
+        setFavorites(false)
+      }
+      else{
+        favoritesObj[productId] = productObj;
+        setFavorites(true);
+      }
+      await AsyncStorage.setItem(favoritesId, JSON.stringify(favoritesObj));
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  const handleFavourites =() =>{
+    if(isLoggedIn === false){
+      navigation.navigate('LoginScreen');
+    }
+    else{
+      addToFavorites();
+    }
+  }
+
+  const handleBuy =() =>{
+    if(isLoggedIn === false){
+      navigation.navigate('LoginScreen');
+    }
+    else{
+      console.log("Pressed")
+    }
+  }
+
+  const handleCart =() =>{
+    if(isLoggedIn === false){
+      navigation.navigate('LoginScreen');
+    }
+    else{
+      addToCart(item._id,count)
+    }
+  }
+
+  const checkFavorites = async() =>{
+    const id = await AsyncStorage.getItem('id');
+    const favoritesId = `favorites${JSON.parse(id)}`;
+    console.log(favoritesId);
+    try{
+      const favoritesObj = await AsyncStorage.getItem(favoritesId);
+      if(favoritesObj !== null){
+        const favorites = JSON.parse(favoritesObj);
+
+        if(favorites[item._id]){
+          setFavorites(true);
+        }
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+
 
   return (
     <View style={styles.container}>
@@ -37,9 +148,9 @@ const ProductDetails = ({navigation}) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleFavourites()}>
           <IonIcons
-           name='heart'
+           name={favorites ? 'heart' : 'heart-outline'}
            size={30}
            color= {COLORS.primary}
           />
@@ -121,11 +232,13 @@ const ProductDetails = ({navigation}) => {
     </View>
 
     <View style={styles.cartRow}>
-        <TouchableOpacity onPress={()=>{}} style={styles.cartBtn}>
+        <TouchableOpacity onPress={() => handleBuy()} 
+          style={styles.cartBtn}>
           <Text style={styles.btnTitle}>BUY NOW</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>{}} style={styles.addCartBtn}>
+        <TouchableOpacity onPress={() => handleCart()} 
+        style={styles.addCartBtn}>
           <MaterialCommunityIcons 
           name= 'shopping'
           size={24}
