@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import Cart from "./screens/Cart";
 import {
@@ -13,9 +13,15 @@ import {
   Favourites,
   SignUp,
 } from "./screens";
+import { UpdateCartContext } from "./context/UpdateCartContext";
+
+
 const Stack = createNativeStackNavigator();
+//const STRIPE_PUBLISHABLE_KEY = 'pk_test_51Oe0aRAEWKGknB4qU391rQbgEyUNFFd3Y5X28cn3C3DMysv6wMVv69Snksl368yADnRhwgQUXhLmkImzkaRZtJqJ00oNRHGnlC';
 
 export default function App() {
+  const [cartCount, setCartCount] = useState(0);
+  const [updateCart,setUpdateCart] = useState(false);
   const [fontsLoaded] = useFonts({
     regular: require("./assets/fonts/Poppins-Regular.ttf"),
     light: require("./assets/fonts/Poppins-Light.ttf"),
@@ -36,7 +42,8 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
+    <UpdateCartContext.Provider value={{updateCart,setUpdateCart}}>
+      <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
           name="Bottom Navigation"
@@ -90,6 +97,9 @@ export default function App() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+
     </NavigationContainer>
+    </UpdateCartContext.Provider>
+    
   );
 }

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     letterSpacing: 4,
     marginLeft: SIZES.small,
   },
-  favContainer: (color) => ({
+  favContainer: (color) =>({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",

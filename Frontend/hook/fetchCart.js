@@ -1,12 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UpdateCartContext } from "../context/UpdateCartContext";
 
 
 const fetchCart = () => {
     const [data, setData] = useState([]);
     const [loading, setLoader] = useState(false);
     const [error, setError] = useState(null);
+    const {updateCart,setUpdateCart} = useContext(UpdateCartContext);
    
     
     const fetchData = async () => {
@@ -35,7 +37,7 @@ const fetchCart = () => {
 
     useEffect(() =>{
         fetchData();
-    }, []);
+    }, [updateCart]);
 
     const refetch = ()=> {
         setLoader(true);
