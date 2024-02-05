@@ -58,7 +58,7 @@ const ProductDetails = ({ navigation }) => {
   const createCheckOut = async () => {
     const id = await AsyncStorage.getItem('id');
 
-    const response = await fetch('https://stripe-payment-production-07af.up.railway.app/stripe/create-checkout-session', {
+    const response = await fetch('https://stripe-payment-production-dcea.up.railway.app/stripe/create-checkout-session', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
