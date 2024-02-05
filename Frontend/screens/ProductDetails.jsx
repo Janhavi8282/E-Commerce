@@ -59,9 +59,9 @@ const ProductDetails = ({ navigation }) => {
     const id = await AsyncStorage.getItem('id');
 
     const response = await fetch('https://stripe-payment-production-07af.up.railway.app/stripe/create-checkout-session', {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userId: JSON.parse(id),
@@ -76,20 +76,23 @@ const ProductDetails = ({ navigation }) => {
       })
     });
 
-    const responseBody = await response.text();
-    console.log('Response Body', responseBody);
+    if (!response.ok) {
+      console.error('Error', response.status, response.statusText);
+    } else {
 
-    const { url } = JSON.parse(responseBody);
-    setPaymentUrl(url)
+      const { url } = await response.json();
+      setPaymentUrl(url)
+    };
   }
+
 
   const onNavigationStateChange = (webViewState) => {
     const { url } = webViewState;
 
-    if (url && url.includes('checkout-success')) {
+    if (url && url.includes("checkout-success")) {
       navigation.navigate("Orders")
     }
-    else if (url && url.includes('cancel')) {
+    else if (url && url.includes("cancel")) {
       navigation.goBack();
     }
   }
@@ -157,7 +160,7 @@ const ProductDetails = ({ navigation }) => {
   const checkFavorites = async () => {
     const id = await AsyncStorage.getItem('id');
     const favoritesId = `favorites${JSON.parse(id)}`;
-    console.log(favoritesId);
+
     try {
       const favoritesObj = await AsyncStorage.getItem(favoritesId);
       if (favoritesObj !== null) {
