@@ -112,7 +112,7 @@ module.exports = {
 
   resetCart: async (req, res) => {
     try {
-      await Cart.deleteMany(req.user.id);
+      await Cart.deleteMany({userId: req.user.id});
       res.status(200).json({
         status: true,
         message: "Cart reset",

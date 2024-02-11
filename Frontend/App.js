@@ -13,7 +13,7 @@ import {
   Favourites,
   SignUp,
 } from "./screens";
-import { UpdateCartContext } from "./context/UpdateCartContext";
+//import { UpdateCartContext } from "./context/UpdateCartContext";
 
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +21,13 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [cartCount, setCartCount] = useState(0);
-  const [updateCart,setUpdateCart] = useState(false);
+  const [updateCart,setUpdateCart] = useState({cartCount: 0});
+
+  const updateCartCount =(count)=>{
+    setUpdateCart({cartCount: count});
+    //console.log("Cart", cartCount);
+  };
+
   const [fontsLoaded] = useFonts({
     regular: require("./assets/fonts/Poppins-Regular.ttf"),
     light: require("./assets/fonts/Poppins-Light.ttf"),
@@ -42,7 +48,6 @@ export default function App() {
   }
 
   return (
-    <UpdateCartContext.Provider value={{updateCart,setUpdateCart}}>
       <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -99,7 +104,7 @@ export default function App() {
       </Stack.Navigator>
 
     </NavigationContainer>
-    </UpdateCartContext.Provider>
+    
     
   );
 }

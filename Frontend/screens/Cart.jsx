@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createContext, useState, useEffect } from 'react';
 import styles from './cart.style';
@@ -8,12 +8,14 @@ import { COLORS } from '../constants';
 import fetchCart from '../hook/fetchCart';
 import CartTile from '../components/cart/cartTile';
 import Button from '../components/Button';
-
+import { UpdateCartContext } from '../context/UpdateCartContext';
 
 const Cart = ({ navigation }) => {
+  const { setUpdateCart } = useContext(UpdateCartContext);
   const { data, loading, error, refetch } = fetchCart();
   const [selected, setSelected] = useState([]);
   const [select, setSelect] = useState(false);
+
 
   const toggleSelect = (itemId) => {
     setSelected((prevSelectedItems) => {
@@ -24,7 +26,9 @@ const Cart = ({ navigation }) => {
         // Item is not selected, add it
         return [...prevSelectedItems, itemId];
       }
+
     });
+
   };
 
   return (
