@@ -13,20 +13,19 @@ import {
   Favourites,
   SignUp,
 } from "./screens";
-//import { UpdateCartContext } from "./context/UpdateCartContext";
+
 
 
 const Stack = createNativeStackNavigator();
 //const STRIPE_PUBLISHABLE_KEY = 'pk_test_51Oe0aRAEWKGknB4qU391rQbgEyUNFFd3Y5X28cn3C3DMysv6wMVv69Snksl368yADnRhwgQUXhLmkImzkaRZtJqJ00oNRHGnlC';
 
 export default function App() {
-  const [cartCount, setCartCount] = useState(0);
-  const [updateCart,setUpdateCart] = useState({cartCount: 0});
+  
+  
 
-  const updateCartCount =(count)=>{
-    setUpdateCart({cartCount: count});
-    //console.log("Cart", cartCount);
-  };
+  // const updateCartCount =(count)=>{
+  //   setUpdateCart({cartCount: count});
+  // };
 
   const [fontsLoaded] = useFonts({
     regular: require("./assets/fonts/Poppins-Regular.ttf"),
@@ -104,7 +103,6 @@ export default function App() {
       </Stack.Navigator>
 
     </NavigationContainer>
-    
     
   );
 }

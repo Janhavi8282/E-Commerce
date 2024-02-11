@@ -4,3 +4,4 @@ export const UpdateCartContext = createContext({
     updateCart: {cartCount: 0},
     setUpdateCart : () =>{}
 });
+

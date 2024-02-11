@@ -16,7 +16,7 @@ import { UpdateCartContext } from '../context/UpdateCartContext';
 
 
 const Home = () => {
-  const { updateCart } = useContext(UpdateCartContext);
+  const { updateCart, setUpdateCart } = useContext(UpdateCartContext);
   const [userData, setUserData] = useState(null);
   const [userLogin, setUserLogin] = useState(false);
 
@@ -43,6 +43,8 @@ const Home = () => {
 
     }
   }
+
+
   return (
     <SafeAreaView>
       <View style={styles.appBarWrapper}>
