@@ -3,6 +3,7 @@ const Stripe = require("stripe");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
+const { time } = require("console");
 require("dotenv").config();
 
 const stripe = Stripe(process.env.STRIPE_SECRET);
@@ -29,6 +30,7 @@ const checkoutSuccessPage = fs.readFileSync(
 
 
 router.post("/create-checkout-session", async (req, res) => {
+  console.log(req.body.userId);
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.userId,
@@ -42,8 +44,8 @@ router.post("/create-checkout-session", async (req, res) => {
       price_data: {
         currency: "usd",
         product_data: {
-          name: item.name,
-          imageUrl: item.image,
+          name: item.title,
+          // images: item.imageUrl,
           description: item.desc,
           metadata: {
             id: item.id,
@@ -56,16 +58,15 @@ router.post("/create-checkout-session", async (req, res) => {
   });
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-   
-    
+
     phone_number_collection: {
       enabled: false,
     },
     line_items,
     mode: "payment",
     customer: customer.id,
-    success_url: "https://stripe-payment-production-dcea.up.railway.app/stripe/checkout-success",
-    cancel_url:  "https://stripe-payment-production-dcea.up.railway.app/stripe/cancel",
+    success_url: "https://stripepayment-production-a598.up.railway.app/stripe/checkout-success",
+    cancel_url:  "https://stripepayment-production-a598.up.railway.app/stripe/cancel",
   });
 
   // res.redirect(303, session.url);
@@ -109,7 +110,7 @@ const createOrder = async (customer, data) => {
 //   "/webhook",
 //   bodyParser.raw({ type: "*/*" }),
 //   async (req, res) => {
-//     // req.rawBody = buf.toString();
+   
 //     let data;
 //     let eventType;
 
@@ -163,7 +164,6 @@ const createOrder = async (customer, data) => {
 //     res.status(200).end();
 //   }
 // );
-
 
 
 module.exports = router;
